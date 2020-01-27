@@ -1,35 +1,35 @@
-const $start = document.querySelector("#start");
-const $homeScreen = document.querySelector("#homeScreen");
-const $questionScreen = document.querySelector("#questionScreen");
-const $question = document.querySelector("#question");
-const $answer1 = document.querySelector("#answer1");
-const $answer2 = document.querySelector("#answer2");
-const $answer3 = document.querySelector("#answer3");
-const $answer4 = document.querySelector("#answer4");
+const $start = $("#start");
+const $homeScreen = $("#homeScreen");
+const $questionScreen = $("#questionScreen");
+const $question = $("#question");
+const $answer1 = $("#answer1");
+const $answer2 = $("#answer2");
+const $answer3 = $("#answer3");
+const $answer4 = $("#answer4");
 
-let questionCounter = 0;
+let qCounter = 0;
 
-$start.addEventListener('click', function(){
-    $homeScreen.classList.add('hide');
-    questionCounter = 0;
+$start.on('click', function(){
+    $homeScreen.addClass('hide');
+    qCounter = 0;
     nextQuestion();
 })
 
 function nextQuestion(){
-    $questionScreen.classList.remove('hide');
-    $question.textContent = questions[questionCounter].title;
-    $answer1.textContent = questions[questionCounter].choices[0];
-    $answer2.textContent = questions[questionCounter].choices[1];
-    $answer3.textContent = questions[questionCounter].choices[2];
-    $answer4.textContent = questions[questionCounter].choices[3];
-    questionCounter++;
+    $questionScreen.removeClass('hide');
+    $question.text(questions[qCounter].title);
+    $answer1.text(questions[qCounter].choices[0]);
+    $answer2.text(questions[qCounter].choices[1]);
+    $answer3.text(questions[qCounter].choices[2]);
+    $answer4.text(questions[qCounter].choices[3]);
+    qCounter++;
     
 }
 
 function checkAnswer(choice){
-    choice.addEventListener('click', function(){
-        console.log(questions[questionCounter - 1].answer)
-        if(choice.textContent === questions[questionCounter - 1].answer){
+    choice.on('click', function(){
+        console.log(questions[qCounter - 1].answer)
+        if(choice.text() === questions[qCounter - 1].answer){
             nextQuestion();
         }
         else{
