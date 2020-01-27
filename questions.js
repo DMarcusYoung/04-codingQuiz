@@ -11,7 +11,7 @@ const questions = [
     },
     {
         title:"What is the name of the statement that is used to exit or end a loop?",
-        choices:["Falter statement", "Close statment", "Conditional statement", "Break statement"],
+        choices:["Falter statement", "Close statment", "Break statement", "Conditional statement"],
         answer:"Break statement"
     },
     {
