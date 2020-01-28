@@ -8,8 +8,10 @@ const $answer2 = $("#answer2");
 const $answer3 = $("#answer3");
 const $answer4 = $("#answer4");
 const $time = $("#time");
+const $subBtn = $("#submitScore")
 
-let qCount = 0;
+let qCount;
+let score;
 
 $start.on('click', function(){
     $homeScreen.addClass('hide');
@@ -21,8 +23,7 @@ $start.on('click', function(){
 function nextQuestion(){
     $questionScreen.removeClass('hide');
     if(questions[qCount] === undefined){
-        $questionScreen.addClass('hide');
-        $endScreen.removeClass('hide');
+        endGame();
         return
     }
     $question.text(questions[qCount].title);
@@ -31,12 +32,10 @@ function nextQuestion(){
     $answer3.text(questions[qCount].choices[2]);
     $answer4.text(questions[qCount].choices[3]);
     qCount++;
-    
 }
 
 function checkAnswer(choice){
     choice.on('click', function(){
-        console.log(questions[qCount - 1].answer)
         if(choice.text() === questions[qCount - 1].answer){
             nextQuestion();
         }
@@ -45,23 +44,43 @@ function checkAnswer(choice){
         }
     })
 }
+checkAnswer($answer1);
+checkAnswer($answer2);
+checkAnswer($answer3);
+checkAnswer($answer4);
 
+function endGame(){
+    stopTimer();
+    $questionScreen.addClass('hide');
+    $endScreen.removeClass('hide');
+    $('.scoreDisplay').text(`Your score is ${secondsLeft}`);
+
+}
+
+var timerInterval;
+let secondsLeft;
 function countdown(){
-    let secondsLeft = 30;
+    secondsLeft = 30;
     $time.text(secondsLeft);
-    var timerInterval = setInterval(function() {
+    timerInterval = setInterval(function() {
         secondsLeft--;
         $time.text(secondsLeft);
     
         if(secondsLeft === 0) {
           clearInterval(timerInterval);
-          console.log('times up');
-          $endScreen.removeClass('hide');
+          endGame();
         }
       }, 1000);
 }
 
-checkAnswer($answer1);
-checkAnswer($answer2);
-checkAnswer($answer3);
-checkAnswer($answer4);
+function stopTimer(){
+    clearInterval(timerInterval);
+}
+
+$subBtn.on('click', function(e){
+    e.preventDefault();
+    let user = $("#initials").value;
+    console.log(user);
+    localStorage.setItem("user", user);
+
+})
