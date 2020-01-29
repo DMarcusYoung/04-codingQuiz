@@ -1,14 +1,17 @@
 const $start = $("#start");
+const $highScore = $("#highScore");
 const $homeScreen = $("#homeScreen");
 const $questionScreen = $("#questionScreen");
 const $endScreen = $("#endScreen");
+const $scoreScreen = $("#scoreScreen");
 const $question = $("#question");
 const $answer1 = $("#answer1");
 const $answer2 = $("#answer2");
 const $answer3 = $("#answer3");
 const $answer4 = $("#answer4");
 const $time = $("#time");
-const $subBtn = $("#submitScore")
+const $subBtn = $("#submitScore");
+const $scoreList = $("#scoreList");
 
 let qCount;
 let score;
@@ -18,6 +21,12 @@ $start.on('click', function(){
     qCount = 0;
     nextQuestion();
     countdown();
+})
+
+$highScore.on('click', function(){
+    $homeScreen.addClass('hide');
+    console.log("hi");
+    showScores();
 })
 
 function nextQuestion(){
@@ -66,7 +75,7 @@ function countdown(){
         secondsLeft--;
         $time.text(secondsLeft);
     
-        if(secondsLeft === 0) {
+        if(secondsLeft <= 0) {
           clearInterval(timerInterval);
           endGame();
         }
@@ -77,10 +86,33 @@ function stopTimer(){
     clearInterval(timerInterval);
 }
 
+// Save scores to local storage and be able to access name, score and number of users who have played
+// Have a master object that has nested objects(one for each user) or arrays 
+// let userScore = `${user} - ${secondsLeft}`
+let userScore = [];
+// localStorage.setItem("users", userScore);
+
 $subBtn.on('click', function(e){
     e.preventDefault();
-    let user = $("#initials").value;
-    console.log(user);
-    localStorage.setItem("user", user);
-
+    let $user = $("#initials").val();
+    if (localStorage.getItem("users") != undefined){
+        userScore = JSON.parse(localStorage.getItem("users"));
+    }
+    userScore.push({name: $user,score:secondsLeft});
+    userScore = JSON.stringify(userScore);
+    localStorage.setItem("users", userScore);
+    $endScreen.addClass('hide');
+    showScores();
 })
+
+function showScores(){
+    $scoreScreen.removeClass('hide');
+    userScore = JSON.parse(localStorage.getItem("users"));
+    userScore.sort(function(a, b){return b.score - a.score});
+    for (let i in userScore){
+        const $userLi = $("<li>")
+        $userLi.text(userScore[i].name +"-"+ userScore[i].score);
+        $scoreList.append($userLi);
+    }
+    
+}
