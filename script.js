@@ -12,6 +12,7 @@ const $answer4 = $("#answer4");
 const $time = $("#time");
 const $subBtn = $("#submitScore");
 const $scoreList = $("#scoreList");
+const $clearBtn = $("#clear");
 
 let qCount;
 let score;
@@ -116,3 +117,9 @@ function showScores(){
     }
     
 }
+
+
+$clearBtn.on('click', function(){
+    localStorage.removeItem("users");
+    $scoreList.empty();
+})
