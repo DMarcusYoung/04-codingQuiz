@@ -13,6 +13,7 @@ const $answerGrade = $("#answerGrade");
 const $answerBtn = $(".answerBtn");
 const $time = $("#time");
 const $subBtn = $("#submitScore");
+const $reenterName = $("#reenterName");
 const $scoreList = $("#scoreList");
 const $clearBtn = $("#clear");
 const $backBtn = $('#back');
@@ -23,6 +24,7 @@ let qCount;
 $start.on('click', function(){
     $homeScreen.addClass('hide');
     qCount = 0;
+    $answerGrade.text("");
     nextQuestion();
     countdown();
 })
@@ -87,7 +89,12 @@ let userScore = [];
 
 $subBtn.on('click', function(e){
     e.preventDefault();
-    let $user = $("#initials").val();
+    let $user = $("#initials").val().trim();
+    $reenterName.text('');
+    if($user.trim() === ""){
+        $reenterName.text("You can't leave this field blank");
+        return
+    }
     if (localStorage.getItem("users") != undefined){
         userScore = JSON.parse(localStorage.getItem("users"));
     }
