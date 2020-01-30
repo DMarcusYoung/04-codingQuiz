@@ -69,7 +69,6 @@ function countdown(){
     timerInterval = setInterval(function() {
         secondsLeft--;
         $time.text(secondsLeft);
-    
         if(secondsLeft <= 0) {
           clearInterval(timerInterval);
           endGame();
@@ -107,7 +106,6 @@ function showScores(){
         $userLi.text(userScore[i].name +"-"+ userScore[i].score);
         $scoreList.append($userLi);
     }
-    
 }
 
 $clearBtn.on('click', function(){
@@ -118,5 +116,6 @@ $clearBtn.on('click', function(){
 $backBtn.on('click', function(){
     $scoreScreen.addClass('hide');    
     $homeScreen.removeClass('hide');
+    $scoreList.empty();
     userScore = [];
 })
