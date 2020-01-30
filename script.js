@@ -9,14 +9,16 @@ const $answer1 = $("#answer1");
 const $answer2 = $("#answer2");
 const $answer3 = $("#answer3");
 const $answer4 = $("#answer4");
-const $answerBtn = $(".answerBtn")
+const $answerGrade = $("#answerGrade");
+const $answerBtn = $(".answerBtn");
 const $time = $("#time");
 const $subBtn = $("#submitScore");
 const $scoreList = $("#scoreList");
 const $clearBtn = $("#clear");
 const $backBtn = $('#back');
+var timerInterval;
+let secondsLeft;
 let qCount;
-let score;
 
 $start.on('click', function(){
     $homeScreen.addClass('hide');
@@ -46,10 +48,13 @@ function nextQuestion(){
 
 $answerBtn.on('click', function(){
     if($(this).text() === questions[qCount - 1].answer){
+        $answerGrade.text("Correct!")
         nextQuestion();
     }
     else{
-        console.log('wrong');
+        $answerGrade.text('Wrong');
+        secondsLeft-=5;
+        $time.text(secondsLeft);
     }
 })
 
@@ -61,8 +66,6 @@ function endGame(){
 
 }
 
-var timerInterval;
-let secondsLeft;
 function countdown(){
     secondsLeft = 30;
     $time.text(secondsLeft);
