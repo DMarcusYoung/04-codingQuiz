@@ -9,11 +9,12 @@ const $answer1 = $("#answer1");
 const $answer2 = $("#answer2");
 const $answer3 = $("#answer3");
 const $answer4 = $("#answer4");
+const $answerBtn = $(".answerBtn")
 const $time = $("#time");
 const $subBtn = $("#submitScore");
 const $scoreList = $("#scoreList");
 const $clearBtn = $("#clear");
-
+const $backBtn = $('#back');
 let qCount;
 let score;
 
@@ -26,7 +27,6 @@ $start.on('click', function(){
 
 $highScore.on('click', function(){
     $homeScreen.addClass('hide');
-    console.log("hi");
     showScores();
 })
 
@@ -44,20 +44,14 @@ function nextQuestion(){
     qCount++;
 }
 
-function checkAnswer(choice){
-    choice.on('click', function(){
-        if(choice.text() === questions[qCount - 1].answer){
-            nextQuestion();
-        }
-        else{
-            console.log('wrong');
-        }
-    })
-}
-checkAnswer($answer1);
-checkAnswer($answer2);
-checkAnswer($answer3);
-checkAnswer($answer4);
+$answerBtn.on('click', function(){
+    if($(this).text() === questions[qCount - 1].answer){
+        nextQuestion();
+    }
+    else{
+        console.log('wrong');
+    }
+})
 
 function endGame(){
     stopTimer();
@@ -87,11 +81,7 @@ function stopTimer(){
     clearInterval(timerInterval);
 }
 
-// Save scores to local storage and be able to access name, score and number of users who have played
-// Have a master object that has nested objects(one for each user) or arrays 
-// let userScore = `${user} - ${secondsLeft}`
 let userScore = [];
-// localStorage.setItem("users", userScore);
 
 $subBtn.on('click', function(e){
     e.preventDefault();
@@ -108,7 +98,9 @@ $subBtn.on('click', function(e){
 
 function showScores(){
     $scoreScreen.removeClass('hide');
-    userScore = JSON.parse(localStorage.getItem("users"));
+    if(localStorage.getItem("users")){
+        userScore = JSON.parse(localStorage.getItem("users"));
+    }
     userScore.sort(function(a, b){return b.score - a.score});
     for (let i in userScore){
         const $userLi = $("<li>")
@@ -118,8 +110,13 @@ function showScores(){
     
 }
 
-
 $clearBtn.on('click', function(){
     localStorage.removeItem("users");
     $scoreList.empty();
+})
+
+$backBtn.on('click', function(){
+    $scoreScreen.addClass('hide');    
+    $homeScreen.removeClass('hide');
+    userScore = [];
 })
